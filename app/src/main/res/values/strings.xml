@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">ActivitySample</string>
+    <string name="new_ivent">Add</string>
+    <string name="date_start">date start</string>
+    <string name="delete">delete</string>
+    <string-array name="meals">
+        <item>apple</item>
+        <item>banana</item>
+        <item>cucumber</item>
+        <item>donat</item>
+        <item>finik</item>
+        <item>ginger</item>
+        <item>juice</item>
+        <item>lemon</item>
+        <item>melon</item>
+        <item>onion</item>
+        <item>potatoes</item>
+    </string-array>
+    <string-array name="desctiptions">
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+        <item>about this meal</item>
+    </string-array>
+</resources>
