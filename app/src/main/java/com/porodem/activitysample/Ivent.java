@@ -8,6 +8,7 @@ public class Ivent {
     private String mTitle;
     private Date mDate;
     private String topDuration;
+    private int mEventId;
 
     public Ivent() {
         this(UUID.randomUUID());
@@ -51,4 +52,11 @@ public class Ivent {
     }
 
 
+    public int getEventId() {
+        return mEventId;
+    }
+
+    public void setEventId(int mEventId) {
+        this.mEventId = mEventId;
+    }
 }

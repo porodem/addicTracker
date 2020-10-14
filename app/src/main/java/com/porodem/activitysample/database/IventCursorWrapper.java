@@ -21,15 +21,15 @@ public class IventCursorWrapper extends CursorWrapper {
     }
 
     public Ivent getIvent() {
-        String uuidString = getString(getColumnIndex(IventsTable.Cols.UUID));
-        String title = getString(getColumnIndex(IventsTable.Cols.TITLE));
-        long date = getLong(getColumnIndex(IventsTable.Cols.DATE));
-        String topDuration = getString(getColumnIndex(IventsTable.Cols.TOP_DURATION));
+        String uuidString = getString(getColumnIndex(TableTrack.Cols.EVENT_ID));
+        String title = getString(getColumnIndex(TableEvent.Cols.TITLE));
+        long bdate = getLong(getColumnIndex(TableTrack.Cols.BDATE));
+        //String topDuration = getString(getColumnIndex(TableTrack.Cols.EDATE));
 
         Ivent ivent = new Ivent(UUID.fromString(uuidString));
         ivent.setTitle(title);
-        ivent.setmDate(new Date(date));
-        ivent.setTopDuration(topDuration);
+        ivent.setmDate(new Date(bdate));
+        //ivent.setTopDuration(topDuration);
         return ivent;
     }
 }

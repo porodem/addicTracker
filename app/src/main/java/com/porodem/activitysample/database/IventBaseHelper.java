@@ -19,12 +19,31 @@ public class IventBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + IventsTable.NAME + "(" +
+        db.execSQL("CREATE TABLE " + TableEvent.NAME + "(" +
                 " _id integer primary key autoincrement, " +
-                IventsTable.Cols.UUID + ", " +
-                IventsTable.Cols.TITLE + ", " +
-                IventsTable.Cols.DATE + ", " +
-                IventsTable.Cols.TOP_DURATION +
+                TableEvent.Cols.UUID + ", " +
+                TableEvent.Cols.TITLE + ", " +
+                TableEvent.Cols.NOTE + ", " +
+                TableEvent.Cols.TARGET_DURATION + ", " +
+                TableEvent.Cols.TOP_DURATION + ", " +
+                TableEvent.Cols.ICON_PATH +
+                ")"
+        );
+
+        db.execSQL("CREATE TABLE " + TableTrack.NAME + "(" +
+                " _id integer primary key autoincrement, " +
+                TableTrack.Cols.ID + ", " +
+                TableTrack.Cols.BDATE + ", " +
+                TableTrack.Cols.EDATE + ", " +
+                TableTrack.Cols.EVENT_ID + ", " +
+                TableTrack.Cols.FAIL_ID +
+                ")"
+        );
+
+        db.execSQL("CREATE TABLE " + TableFail.NAME + "(" +
+                " _id integer primary key autoincrement, " +
+                TableFail.Cols.ID + ", " +
+                TableFail.Cols.TRIGGER_NAME +
                 ")"
         );
     }

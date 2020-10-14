@@ -22,6 +22,10 @@ public class IventLab {
     private Context mCtx;
     private SQLiteDatabase mDB;
 
+    private static String allQuery = "select event_id, title, bdate from event join track on track.event_id = event.uuid";
+
+    private static String eventQuery = "select event_id, title, bdate from event join track on track.event_id = event.uuid where uuid = ?";
+
     public static IventLab get(Context context) {
         if (sIventLab == null) {
             sIventLab = new IventLab(context);
@@ -43,7 +47,9 @@ public class IventLab {
     public List<Ivent> getIvents() {
         List<Ivent> ivents = new ArrayList<>();
 
-        IventCursorWrapper cursor = queryIvents(null, null);
+        //IventCursorWrapper cursor = queryIvents(null, null);
+
+        IventCursorWrapper cursor = queryIvents(null);
 
         try {
             cursor.moveToFirst();
@@ -58,10 +64,29 @@ public class IventLab {
     }
 
     public Ivent getIvent(UUID id) {
-        IventCursorWrapper cursor = queryIvents(
-                IventsTable.Cols.UUID + " = ?",
+        /*IventCursorWrapper cursor = queryIvents(
+                TableTrack.Cols.ID + " = ?",
                 new String[] {id.toString()}
-        );
+        );*/
+        IventCursorWrapper cursor = queryIvents(new String[] {id.toString()});
+
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getIvent();
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public Ivent getOneIvent(UUID id) {
+        /*IventCursorWrapper cursor = queryIvents(
+                TableTrack.Cols.ID + " = ?",
+                new String[] {id.toString()}
+        );*/
+        IventCursorWrapper cursor = queryOneIvent(new String[] {id.toString()});
 
         try {
             if (cursor.getCount() == 0) {
@@ -78,14 +103,14 @@ public class IventLab {
         String uuidString = ivent.getId().toString();
         ContentValues values = getContentValues(ivent);
 
-        mDB.update(IventsTable.NAME, values,
-                IventsTable.Cols.UUID + " = ?",
+        mDB.update(TableTrack.NAME, values,
+                TableTrack.Cols.ID + " = ?",
                 new String[] { uuidString });
     }
 
-    private IventCursorWrapper queryIvents(String whereClause, String[] whereArgs) {
+    private IventCursorWrapper _queryIvents(String whereClause, String[] whereArgs) {
         Cursor cursor = mDB.query(
-                IventsTable.NAME,
+                TableTrack.NAME,
                 null,
                 whereClause,
                 whereArgs,
@@ -96,23 +121,52 @@ public class IventLab {
         return new IventCursorWrapper(cursor);
     }
 
+    private IventCursorWrapper queryIvents(String[] whereArgs) {
+        Cursor cursor = mDB.rawQuery(allQuery, whereArgs);
+        return new IventCursorWrapper(cursor);
+    }
+
+    private IventCursorWrapper queryOneIvent(String[] whereArgs) {
+        Cursor cursor = mDB.rawQuery(eventQuery, whereArgs);
+        return new IventCursorWrapper(cursor);
+    }
+
     public void addIvent(Ivent iv) {
         ContentValues values = getContentValues(iv);
-        mDB.insert(IventsTable.NAME, null, values);
+        mDB.insert(TableTrack.NAME, null, values);
+        ContentValues valuesEvent = getContentValuesEvent(iv);
+        mDB.insert(TableEvent.NAME, null, valuesEvent);
     }
+
+    public void addEvent(Ivent iv) {
+        ContentValues values = getContentValuesEvent(iv);
+        mDB.insert(TableEvent.NAME, null, values);
+    }
+
+
 
     public void deleteIvent(Ivent ivent) {
         String uuidString = ivent.getId().toString();
         ContentValues contentValues = getContentValues(ivent);
 
-        mDB.delete(IventsTable.NAME, IventsTable.Cols.UUID + " = ?", new String[] {uuidString});
+        mDB.delete(TableTrack.NAME, TableTrack.Cols.ID + " = ?", new String[] {uuidString});
     }
 
     private static ContentValues getContentValues(Ivent ivent) {
         ContentValues values = new ContentValues();
-        values.put(IventsTable.Cols.UUID, ivent.getId().toString());
-        values.put(IventsTable.Cols.DATE, ivent.getDate().getTime());
-        values.put(IventsTable.Cols.TITLE, ivent.getTitle());
+        values.put(TableTrack.Cols.ID, ivent.getId().toString());
+        values.put(TableTrack.Cols.BDATE, ivent.getDate().getTime());
+        values.put(TableTrack.Cols.EVENT_ID, ivent.getId().toString());
+        //values.put(TableTrack.Cols.TITLE, ivent.getTitle());
+        //values.put(IventsTable.Cols.TOP_DURATION, ivent.getTopDuration());
+        return values;
+    }
+
+    private static ContentValues getContentValuesEvent(Ivent ivent) {
+        ContentValues values = new ContentValues();
+        values.put(TableEvent.Cols.UUID, ivent.getId().toString());
+        values.put(TableEvent.Cols.TITLE, ivent.getTitle());
+        //values.put(TableTrack.Cols.TITLE, ivent.getTitle());
         //values.put(IventsTable.Cols.TOP_DURATION, ivent.getTopDuration());
         return values;
     }

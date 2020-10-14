@@ -205,4 +205,10 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

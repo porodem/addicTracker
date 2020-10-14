@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
 
         UUID eventId = (UUID) getIntent().getSerializableExtra(EXTRA_EVENT_ID);
 
-        ivent = IventLab.get(this).getIvent(eventId);
+        ivent = IventLab.get(this).getOneIvent(eventId);
         d1 = ivent.getDate();
 
         ttl.setText(ivent.getTitle());
