@@ -9,18 +9,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.porodem.activitysample.database.IventUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -30,8 +34,9 @@ public class DetailActivity extends AppCompatActivity {
     private static final String EXTRA_EVENT_ID = "com.porodem.activitysample.event_id";
 
     ImageView imageViewD;
-    TextView ttl, tvDura;
+    TextView ttl, tvDura, tvFailDate;
     Button btnEditDate;
+    Button btnFail;
 
     String data1, data2;
     int image;
@@ -53,8 +58,9 @@ public class DetailActivity extends AppCompatActivity {
         ttl = findViewById(R.id.txtTitleD);
         tvDura = findViewById(R.id.tvPeriod);
         btnEditDate = findViewById(R.id.btnEditStartDate);
+        tvFailDate = findViewById(R.id.tvFailDateD);
 
-
+        btnFail = findViewById(R.id.btnFailD);
 
         UUID eventId = (UUID) getIntent().getSerializableExtra(EXTRA_EVENT_ID);
 
@@ -86,6 +92,13 @@ public class DetailActivity extends AppCompatActivity {
                 StartTime.show();
             }
         });
+
+        btnFail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFail();
+            }
+        });
     }
 
     @Override
@@ -113,6 +126,55 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
+    private void dialogFail() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_event, null);
+        final EditText etDate = (EditText) dialogView.findViewById(R.id.et_event_date);
+        final Date date = new Date();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        etDate.setText(sdf.format(date));
+
+        builder.setView(dialogView).
+                setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        EditText etTitle = (EditText) dialogView.findViewById(R.id.et_newevent_name);
+
+                        //String dialogNewEvent = etTitle.getText().toString();
+                        UUID trackID = ivent.getId();
+                        Date failDate = date;
+
+                        try {
+                            failDate = sdf.parse(etDate.getText().toString());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        IventLab.get(getApplicationContext()).failTrack(trackID, failDate);
+
+                        Ivent newIvent = new Ivent();
+                        newIvent.setTitle(ivent.getTitle());
+                        try {
+                            newIvent.setmDate(sdf.parse(etDate.getText().toString()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        IventLab.get(getApplicationContext()).addIvent(newIvent);
+                        IventLab.get(getApplicationContext()).deleteIvent(ivent);
+                        //updateUI();
+
+                        Intent intent = DetailActivity.newIntent(getApplicationContext(), newIvent.getId());
+            /*intent.putExtra("data2", data2[position]);
+            intent.putExtra("img", images[position]);*/
+                        //itemPosition = getAdapterPosition();
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+        builder.show();
+    }
 
     /*private void confirmEventDelete() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);

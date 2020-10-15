@@ -11,6 +11,7 @@ import com.porodem.activitysample.database.IventDBSchema;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,6 +151,16 @@ public class IventLab {
         ContentValues contentValues = getContentValues(ivent);
 
         mDB.delete(TableTrack.NAME, TableTrack.Cols.ID + " = ?", new String[] {uuidString});
+    }
+
+    public void failTrack(UUID id, Date date) {
+        String uuidString = id.toString();
+        ContentValues values = new ContentValues();
+        values.put(TableTrack.Cols.EDATE, date.getTime());
+
+        mDB.update(TableTrack.NAME, values,
+                TableTrack.Cols.ID + " = ?",
+                new String[] { uuidString });
     }
 
     private static ContentValues getContentValues(Ivent ivent) {
