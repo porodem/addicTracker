@@ -9,6 +9,19 @@ public class Ivent {
     private Date mDate;
     private String topDuration;
     private int mEventId;
+    private long mPrevDura;
+
+    public long getPrevDura() {
+        if(mPrevDura != 0) {
+            return mPrevDura;
+        } else return 0;
+    }
+
+    public void setPrevDura(long mPrevDura) {
+        this.mPrevDura = mPrevDura;
+    }
+
+
 
     public Ivent() {
         this(UUID.randomUUID());

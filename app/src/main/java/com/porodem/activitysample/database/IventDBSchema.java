@@ -9,6 +9,7 @@ public class IventDBSchema {
             public static final String TITLE = "title";
             public static final String NOTE = "note";
             public static final String TARGET_DURATION = "target_duration";
+            public static final String PREV_DUARATION = "prev_duration";
             public static final String TOP_DURATION = "top_duration";
             public static final String ICON_PATH = "icon_path";
         }

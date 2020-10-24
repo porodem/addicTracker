@@ -104,11 +104,12 @@ public class MainActivity extends AppCompatActivity {
             mTitleTextView.setText(mIvent.getTitle());
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             mDateTextView.setText(sdf.format(bdate));
+            String prevDura = String.valueOf(ivent.getPrevDura());
 
             Date date2 = new Date();
             long diff = date2.getTime() - bdate.getTime();
             long duration = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            mDuration.setText(duration + " days");
+            mDuration.setText(duration + " days / " + prevDura);
 
         }
 
@@ -160,14 +161,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        /*switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.new_ivent:
-                Ivent ivent = new Ivent();
+                newEventDialog();
+                return true;
+                /*Ivent ivent = new Ivent();
                 IventLab.get(this).addIvent(ivent);
-                Intent intent = IventPagerActivity
-        }*/
-        newEventDialog();
-        return true;
+                Intent intent = IventPagerActivity*/
+            case R.id.show_fails:
+                Intent intent = new Intent(this, FailsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return true;
+        }
+
+        //return true;
     }
 
     String dialogNewEvent = "";

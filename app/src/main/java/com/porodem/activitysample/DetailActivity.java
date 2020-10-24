@@ -19,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.porodem.activitysample.database.IventUtils;
 
@@ -28,18 +27,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class DetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_EVENT_ID = "com.porodem.activitysample.event_id";
 
     ImageView imageViewD;
-    TextView ttl, tvDura, tvFailDate;
+    TextView ttl, tvDura, tvPrevDuration, mTvPrevDura;
     Button btnEditDate;
     Button btnFail;
 
     String data1, data2;
     int image;
+    long duration, diff, prevDura;
     Ivent ivent;
     Date d1;
 
@@ -58,7 +59,8 @@ public class DetailActivity extends AppCompatActivity {
         ttl = findViewById(R.id.txtTitleD);
         tvDura = findViewById(R.id.tvPeriod);
         btnEditDate = findViewById(R.id.btnEditStartDate);
-        tvFailDate = findViewById(R.id.tvFailDateD);
+        tvPrevDuration = findViewById(R.id.tvPrevDura);
+
 
         btnFail = findViewById(R.id.btnFailD);
 
@@ -66,9 +68,18 @@ public class DetailActivity extends AppCompatActivity {
 
         ivent = IventLab.get(this).getOneIvent(eventId);
         d1 = ivent.getDate();
+        prevDura = ivent.getPrevDura();
 
+        diff = (new Date()).getTime() - d1.getTime();
+        duration = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        String title = ivent.getTitle();
+        if(title.matches("alco.*|алк.*|бух.*")) {
+            imageViewD.setImageResource(R.drawable.alco);
+        }
         ttl.setText(ivent.getTitle());
-        tvDura.setText(IventUtils.getDateString(d1) + " - " + IventUtils.getDateString(new Date()));
+        tvDura.setText(IventUtils.getDateString(d1) + " - " + IventUtils.getDateString(new Date()) + " = " + duration) ;
+        tvPrevDuration.setText(prevDura + "<");
         /*getData();
         setData();*/
 
@@ -154,6 +165,7 @@ public class DetailActivity extends AppCompatActivity {
                         IventLab.get(getApplicationContext()).failTrack(trackID, failDate);
 
                         Ivent newIvent = new Ivent();
+                        newIvent.setPrevDura(duration);
                         newIvent.setTitle(ivent.getTitle());
                         try {
                             newIvent.setmDate(sdf.parse(etDate.getText().toString()));

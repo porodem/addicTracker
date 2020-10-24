@@ -8,13 +8,13 @@
 
     <ImageView
         android:id="@+id/imgBig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/a" />
+        app:srcCompat="@drawable/target" />
 
     <TextView
         android:id="@+id/txtTitleD"
@@ -61,11 +61,11 @@
         app:layout_constraintStart_toStartOf="@+id/btnEditStartDate" />
 
     <TextView
-        android:id="@+id/tvFailDateD"
+        android:id="@+id/tvPrevDura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="prev dura"
         app:layout_constraintEnd_toEndOf="@+id/tvPeriod"
         app:layout_constraintStart_toStartOf="@+id/tvPeriod"
         app:layout_constraintTop_toBottomOf="@+id/tvPeriod" />

@@ -23,9 +23,9 @@ public class IventLab {
     private Context mCtx;
     private SQLiteDatabase mDB;
 
-    private static String allQuery = "select event_id, title, bdate from event join track on track.event_id = event.uuid";
+    private static String allQuery = "select event_id, title, bdate, prev_duration from event join track on track.event_id = event.uuid";
 
-    private static String eventQuery = "select event_id, title, bdate from event join track on track.event_id = event.uuid where uuid = ?";
+    private static String eventQuery = "select event_id, title, bdate, prev_duration from event join track on track.event_id = event.uuid where uuid = ?";
 
     public static IventLab get(Context context) {
         if (sIventLab == null) {
@@ -62,6 +62,21 @@ public class IventLab {
             cursor.close();
         }
         return ivents;
+    }
+
+    public String getFails() {
+        String fails = "";
+        IventCursorWrapper cursor = queryFails(null);
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                fails += cursor.getFail();
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return fails;
     }
 
     public Ivent getIvent(UUID id) {
@@ -132,6 +147,11 @@ public class IventLab {
         return new IventCursorWrapper(cursor);
     }
 
+    private IventCursorWrapper queryFails(String[] whereArgs) {
+        Cursor cursor = mDB.query(TableFail.NAME, null, null, null, null, null, null);
+        return new IventCursorWrapper(cursor);
+    }
+
     public void addIvent(Ivent iv) {
         ContentValues values = getContentValues(iv);
         mDB.insert(TableTrack.NAME, null, values);
@@ -177,6 +197,7 @@ public class IventLab {
         ContentValues values = new ContentValues();
         values.put(TableEvent.Cols.UUID, ivent.getId().toString());
         values.put(TableEvent.Cols.TITLE, ivent.getTitle());
+        values.put(TableEvent.Cols.PREV_DUARATION, ivent.getPrevDura());
         //values.put(TableTrack.Cols.TITLE, ivent.getTitle());
         //values.put(IventsTable.Cols.TOP_DURATION, ivent.getTopDuration());
         return values;

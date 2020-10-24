@@ -6,4 +6,9 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/new_ivent"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/show_fails"
+        android:icon="@android:drawable/presence_busy"
+        android:title="@string/fails"
+        app:showAsAction="ifRoom|withText" />
 </menu>

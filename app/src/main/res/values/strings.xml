@@ -3,6 +3,7 @@
     <string name="new_ivent">Add</string>
     <string name="date_start">date start</string>
     <string name="delete">delete</string>
+    <string name="fails">fails</string>
     <string-array name="meals">
         <item>apple</item>
         <item>banana</item>
