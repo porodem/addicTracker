@@ -23,9 +23,9 @@ public class IventLab {
     private Context mCtx;
     private SQLiteDatabase mDB;
 
-    private static String allQuery = "select event_id, title, bdate, prev_duration from event join track on track.event_id = event.uuid";
+    private static String allQuery = "select event_id, title, bdate, prev_duration, top_duration, top_date, fail_count from event join track on track.event_id = event.uuid";
 
-    private static String eventQuery = "select event_id, title, bdate, prev_duration from event join track on track.event_id = event.uuid where uuid = ?";
+    private static String eventQuery = "select event_id, title, bdate, prev_duration, top_duration, top_date, fail_count from event join track on track.event_id = event.uuid where uuid = ?";
 
     public static IventLab get(Context context) {
         if (sIventLab == null) {
@@ -198,6 +198,9 @@ public class IventLab {
         values.put(TableEvent.Cols.UUID, ivent.getId().toString());
         values.put(TableEvent.Cols.TITLE, ivent.getTitle());
         values.put(TableEvent.Cols.PREV_DUARATION, ivent.getPrevDura());
+        values.put(TableEvent.Cols.TOP_DURATION, ivent.getTopDuration());
+        values.put(TableEvent.Cols.TOP_DURATION_DATE, ivent.getTopDate().getTime());
+        values.put(TableEvent.Cols.FAILS_COUNT, ivent.getFailsCount());
         //values.put(TableTrack.Cols.TITLE, ivent.getTitle());
         //values.put(IventsTable.Cols.TOP_DURATION, ivent.getTopDuration());
         return values;

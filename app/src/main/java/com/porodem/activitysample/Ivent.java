@@ -6,9 +6,9 @@ import java.util.UUID;
 public class Ivent {
     private UUID mId;
     private String mTitle;
-    private Date mDate;
-    private String topDuration;
-    private int mEventId;
+    private Date mDate, topDate;
+    private long topDuration;
+    private int mEventId, failsCount;
     private long mPrevDura;
 
     public long getPrevDura() {
@@ -56,11 +56,11 @@ public class Ivent {
         this.mDate = mDate;
     }
 
-    public String getTopDuration() {
+    public long getTopDuration() {
         return topDuration;
     }
 
-    public void setTopDuration(String topDuration) {
+    public void setTopDuration(long topDuration) {
         this.topDuration = topDuration;
     }
 
@@ -71,5 +71,21 @@ public class Ivent {
 
     public void setEventId(int mEventId) {
         this.mEventId = mEventId;
+    }
+
+    public Date getTopDate() {
+        return topDate;
+    }
+
+    public void setTopDate(Date topDate) {
+        this.topDate = topDate;
+    }
+
+    public int getFailsCount() {
+        return failsCount;
+    }
+
+    public void setFailsCount(int failsCount) {
+        this.failsCount = failsCount;
     }
 }

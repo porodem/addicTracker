@@ -11,6 +11,8 @@ public class IventDBSchema {
             public static final String TARGET_DURATION = "target_duration";
             public static final String PREV_DUARATION = "prev_duration";
             public static final String TOP_DURATION = "top_duration";
+            public static final String TOP_DURATION_DATE = "top_date";
+            public static final String FAILS_COUNT = "fail_count";
             public static final String ICON_PATH = "icon_path";
         }
     }

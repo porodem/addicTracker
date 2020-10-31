@@ -34,15 +34,15 @@ public class DetailActivity extends AppCompatActivity {
     private static final String EXTRA_EVENT_ID = "com.porodem.activitysample.event_id";
 
     ImageView imageViewD;
-    TextView ttl, tvDura, tvPrevDuration, mTvPrevDura;
+    TextView ttl, tvDura, tvPrevDuration, mTvPrevDura, tvTopDura, tvFailsCount;
     Button btnEditDate;
     Button btnFail;
 
-    String data1, data2;
-    int image;
-    long duration, diff, prevDura;
+    String data1, data2, dayDeclension;
+    int image, failsCount;
+    long duration, diff, prevDura, topDura;
     Ivent ivent;
-    Date d1;
+    Date d1, topDate;
 
     public static Intent newIntent(Context packageContext, UUID eventId) {
         Intent intent = new Intent(packageContext, DetailActivity.class);
@@ -60,6 +60,8 @@ public class DetailActivity extends AppCompatActivity {
         tvDura = findViewById(R.id.tvPeriod);
         btnEditDate = findViewById(R.id.btnEditStartDate);
         tvPrevDuration = findViewById(R.id.tvPrevDura);
+        tvTopDura = findViewById(R.id.tvTopResult);
+        tvFailsCount = findViewById(R.id.tvFailsCount);
 
 
         btnFail = findViewById(R.id.btnFailD);
@@ -72,14 +74,38 @@ public class DetailActivity extends AppCompatActivity {
 
         diff = (new Date()).getTime() - d1.getTime();
         duration = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        topDura = ivent.getTopDuration();
+        topDate = ivent.getTopDate();
+        failsCount = ivent.getFailsCount();
+
+
+        dayDeclension = IventUtils.getDeclension((int)duration);
 
         String title = ivent.getTitle();
         if(title.matches("alco.*|алк.*|бух.*")) {
             imageViewD.setImageResource(R.drawable.alco);
         }
+        if(title.matches("candy.*|shuga.*|сладк.*|конфет.*|сахар.*")) {
+            imageViewD.setImageResource(R.drawable.candy);
+        }
+        if(title.matches("fastfood.*|junkfood.*|фастфуд.*|жир.*|фастфуд.*|жарен.*|вкусн.*")) {
+            imageViewD.setImageResource(R.drawable.food);
+        }
+        if(title.matches(".*game.*|.*игры.*|dota.*")) {
+            imageViewD.setImageResource(R.drawable.games);
+        }
+        if(title.matches("smoke.*|курение.*|сигарет.*|табак.*|никотин")) {
+            imageViewD.setImageResource(R.drawable.smoke);
+        }
         ttl.setText(ivent.getTitle());
-        tvDura.setText(IventUtils.getDateString(d1) + " - " + IventUtils.getDateString(new Date()) + " = " + duration) ;
-        tvPrevDuration.setText(prevDura + "<");
+        tvDura.setText(IventUtils.getDateString(d1) + " - " + IventUtils.getDateString(new Date())
+                + "\n" + duration + " " + dayDeclension) ;
+        tvPrevDuration.setText("прошлый раз: " + prevDura + " " + IventUtils.getDeclension((int)prevDura));
+
+        tvTopDura.setText(topDura + " " + IventUtils.getDeclension((int)topDura) + " (" +IventUtils.getDateString(topDate) + ")");
+
+
+        tvFailsCount.setText((failsCount>0?("провалов: " + failsCount ):""));
         /*getData();
         setData();*/
 
@@ -167,6 +193,16 @@ public class DetailActivity extends AppCompatActivity {
                         Ivent newIvent = new Ivent();
                         newIvent.setPrevDura(duration);
                         newIvent.setTitle(ivent.getTitle());
+                        newIvent.setFailsCount(ivent.getFailsCount() + 1);
+                        //set top duratiion
+                        if(duration > topDura) {
+                            //update top duration
+                            newIvent.setTopDuration(duration);
+                            newIvent.setTopDate(failDate);
+                        } else {
+                            newIvent.setTopDuration(ivent.getTopDuration());
+                            newIvent.setTopDate(ivent.getTopDate());
+                        }
                         try {
                             newIvent.setmDate(sdf.parse(etDate.getText().toString()));
                         } catch (ParseException e) {

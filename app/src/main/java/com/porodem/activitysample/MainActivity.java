@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     int itemPosition;
 
     String s1[], s2[];
-    int images[] = {R.drawable.apple, R.drawable.banana, R.drawable.b, R.drawable.c, R.drawable.cucumber, R.drawable.donat, R.drawable.finik,
-                    R.drawable.mango, R.drawable.d, R.drawable.ginger, R.drawable.juice};
+    /*int images[] = {R.drawable.apple, R.drawable.banana, R.drawable.b, R.drawable.c, R.drawable.cucumber, R.drawable.donat, R.drawable.finik,
+                    R.drawable.mango, R.drawable.d, R.drawable.ginger, R.drawable.juice};*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,8 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Ivent ivent = new Ivent();
                 ivent.setTitle(dialogNewEvent);
+                ivent.setFailsCount(0);
                 try {
                     ivent.setmDate(sdf.parse(etDate.getText().toString()));
+                    ivent.setTopDate(sdf.parse(etDate.getText().toString()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

@@ -12,4 +12,20 @@ public class IventUtils {
 
         return s;
     }
+
+    public static String getDeclension(int duration) {
+        String dayDeclension;
+        switch ((int)duration) {
+            case 1:
+                dayDeclension = "день";
+                break;
+            case 2:
+            case 3:
+            case 4:
+                dayDeclension = "дня";
+                break;
+            default: dayDeclension = "дней";
+        }
+        return dayDeclension;
+    }
 }

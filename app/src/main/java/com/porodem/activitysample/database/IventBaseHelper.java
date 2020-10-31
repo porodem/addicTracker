@@ -27,6 +27,8 @@ public class IventBaseHelper extends SQLiteOpenHelper {
                 TableEvent.Cols.TARGET_DURATION + ", " +
                 TableEvent.Cols.PREV_DUARATION + ", " +
                 TableEvent.Cols.TOP_DURATION + ", " +
+                TableEvent.Cols.TOP_DURATION_DATE + ", " +
+                TableEvent.Cols.FAILS_COUNT + ", " +
                 TableEvent.Cols.ICON_PATH +
                 ")"
         );

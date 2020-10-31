@@ -27,12 +27,17 @@ public class IventCursorWrapper extends CursorWrapper {
         long bdate = getLong(getColumnIndex(TableTrack.Cols.BDATE));
         //String topDuration = getString(getColumnIndex(TableTrack.Cols.EDATE));
         String prev_dura = getString(getColumnIndex(TableEvent.Cols.PREV_DUARATION));
+        long topDura = getLong(getColumnIndex(TableEvent.Cols.TOP_DURATION));
+        long topDate = getLong(getColumnIndex(TableEvent.Cols.TOP_DURATION_DATE));
+        int failsCount = getInt(getColumnIndex(TableEvent.Cols.FAILS_COUNT));
 
         Ivent ivent = new Ivent(UUID.fromString(uuidString));
         ivent.setTitle(title);
         ivent.setmDate(new Date(bdate));
         ivent.setPrevDura(Long.valueOf(prev_dura));
-        //ivent.setTopDuration(topDuration);
+        ivent.setTopDuration(topDura);
+        ivent.setTopDate(new Date(topDate));
+        ivent.setFailsCount(failsCount);
         return ivent;
     }
 
